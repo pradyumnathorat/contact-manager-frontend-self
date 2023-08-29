@@ -95,7 +95,8 @@ const Login = () => {
                     ).then((data) => {
                         console.log(data);
                         if (data.error) {
-                            alert(data.error)
+                            alert(data.error);
+                            setLoading(false)
                         } else {
                             localStorage.setItem("token", JSON.stringify(data.token))
                             localStorage.setItem("user", data.user)
