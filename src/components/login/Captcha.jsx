@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import "./Captcha.css"
+import { ArrowPathIcon } from '@heroicons/react/24/solid'
+
 
 const generateRandomString = (length) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -33,16 +35,13 @@ const Captcha = ({ onCaptchaVerified  , isCaptchaVerified }) => {
 
     return (
         <div className='captcha'>
-            <div>Captcha Code:</div>
+            <div>Captcha</div>
             <div>
                 <span className='captcha_text'>{captchaText}</span>
-                <button onClick={handleRefresh} className='refresh' >Refresh</button>
+                <ArrowPathIcon onClick={handleRefresh} className='refresh'/>
             </div>
             <form onSubmit={(e) => handleVerify(e)}>
-                <input type="text" onChange={(e) => setEnteredCaptchaText(e.target.value)} className='input'/>
-                {
-                    !isCaptchaVerified ? <button type="submit" className='verify'>Verify</button> : <button type="submit" className='verified'>Verified</button>
-                }
+                <input type="text" onChange={(e) => setEnteredCaptchaText(e.target.value)} className='input' />
             </form>
         </div>
     );

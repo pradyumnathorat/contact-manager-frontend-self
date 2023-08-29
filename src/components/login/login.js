@@ -2,8 +2,18 @@ import React, { useState } from "react";
 import { isAuthenticated } from "../../helper/helper";
 import { Link } from "react-router-dom";
 import "./login.css";
+import "./Captcha.css"
 import { Navigate } from "react-router-dom";
-import Captcha from "./Captcha";
+import { ArrowPathIcon } from '@heroicons/react/24/solid'
+
+const generateRandomString = (length) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+};
 
 const Login = () => {
     const [email, setemail] = useState("");
@@ -13,6 +23,23 @@ const Login = () => {
     const url = process.env.REACT_APP_API;
     const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [captchaText, setCaptchaText] = useState(generateRandomString(6));
+    const [enteredCaptchaText, setEnteredCaptchaText] = useState("");
+
+
+
+    const handleRefresh = () => {
+        setCaptchaText(generateRandomString(6));
+    };
+
+    // const handleVerify = () => {
+    //     console.log(captchaText, enteredCaptchaText);
+    //     if (captchaText === enteredCaptchaText) {
+    //         return handleCaptchaVerified()
+    //     } else {
+    //         return handleRefresh()
+    //     }
+    // };
 
 
     const handleCaptchaVerified = () => {
@@ -35,37 +62,40 @@ const Login = () => {
     }
     const HandleClick = (e) => {
         e.preventDefault();
-        if (email, password, isCaptchaVerified) {
+        if (email, password , enteredCaptchaText) {
             const isVallid = validateEmail(email);
             if (isVallid) {
-                setLoading(true)
-                fetch(`${url}`, {
-                    method: "POST",
-                    headers: { 'Content-Type': "application/json" },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password
+                if (captchaText !== enteredCaptchaText) {
+                    alert("Please enter correct captcha")
+                    handleRefresh();
+                } else {
+                    setLoading(true)
+                    fetch(`${url}`, {
+                        method: "POST",
+                        headers: { 'Content-Type': "application/json" },
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    }).then((res) => res.json()
+                    ).then((data) => {
+                        console.log(data);
+                        if (data.error) {
+                            alert(data.error)
+                        } else {
+                            localStorage.setItem("token", JSON.stringify(data.token))
+                            localStorage.setItem("user", data.user)
+                            setemail("")
+                            setpassword("")
+                            console.log(isAuthenticated())
+                            setLoading(false)
+                            setredirect(true);
+                        }
                     })
-                }).then((res) => res.json()
-                ).then((data) => {
-                    console.log(data);
-                    if (data.error) {
-                        alert(data.error)
-                    } else {
-                        localStorage.setItem("token", JSON.stringify(data.token))
-                        localStorage.setItem("user", data.user)
-                        setemail("")
-                        setpassword("")
-                        console.log(isAuthenticated())
-                        setLoading(false)
-                        setredirect(true);
-
-                    }
-                })
+                }
             } else {
                 alert("Please Enter Valid Email");
             }
-
         } else {
             alert("Please Fill all Fields")
         }
@@ -154,7 +184,16 @@ const Login = () => {
 
 
                             </div>
-                            <Captcha onCaptchaVerified={handleCaptchaVerified} isCaptchaVerified={isCaptchaVerified} />
+                            <div className='captcha'>
+                                <div>Captcha</div>
+                                <div>
+                                    <span className='captcha_text'>{captchaText}</span>
+                                    <ArrowPathIcon onClick={handleRefresh} className='refresh' />
+                                </div>
+                                <form >
+                                    <input type="text" onChange={(e) => setEnteredCaptchaText(e.target.value)} className='input' />
+                                </form>
+                            </div>
                             <div className="buttons">
                                 <button className="button1" onClick={(e) => HandleClick(e)}>Sign In</button>
                                 <Link to="/register" ><p className="signup" >Sign Up</p></Link>

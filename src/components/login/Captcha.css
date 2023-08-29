@@ -1,27 +1,22 @@
 .captcha {
+   width: 450px;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    /* gap: 0.5rem; */
+    margin-top: 2.5rem;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.captcha_text {
-    margin-right: 1rem;
-    background-color: white;
-    font-weight : bold;
-    font-size: large;
-    padding: 5px;
-    color : gray;
-}
+
 
 .verify {
     margin-left: 1rem;
     padding: 4px;
     background-color: rgb(223, 130, 63);
     color: white;
-    font-weight : bold;
+    font-weight: bold;
     border-radius: 5px;
-    border : none;
+    border: none;
 }
 
 .verified {
@@ -29,22 +24,37 @@
     padding: 4px;
     background-color: rgb(83, 197, 55);
     color: white;
-    font-weight : bold;
+    font-weight: bold;
     border-radius: 5px;
-    border : none;
+    border: none;
 }
 
 .refresh {
-    margin-left: 1rem;
+    height: 30px;
+    width: 30px;
     padding: 4px;
-    background-color: rgb(78, 176, 214);
-    color: white;
-    font-weight : bold;
     border-radius: 5px;
-    border : none;
+    border: none;
 }
 
 .input {
-    padding : 5px;
-    
+    padding:8px;
+    font-size: 15px;
+    border: 0.5px solid gray;
+}
+
+
+.captcha_text {
+    /* width: 400px;
+    height:50px; */
+    /* display: inline-block; */
+    overflow: hidden;
+    font-family: 'Annie Use Your Telescope', cursive;
+    font-size: 25px;
+    letter-spacing: 10px;
+    transform: skewX(-15deg);
+    opacity: 0.8;
+    background-color: rgb(146, 145, 145);
+    text-decoration-line: line-through;
+    color: rgb(164, 51, 51);
 }
