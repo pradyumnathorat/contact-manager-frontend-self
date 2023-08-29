@@ -1,9 +1,9 @@
 .captcha {
    width: 450px;
     display: flex;
-    /* gap: 0.5rem; */
+    gap: 0.5rem;
     margin-top: 2.5rem;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
 }
 
@@ -39,7 +39,7 @@
 
 .input {
     padding:8px;
-    font-size: 15px;
+    font-size: 13px;
     border: 0.5px solid gray;
 }
 
@@ -57,4 +57,8 @@
     background-color: rgb(146, 145, 145);
     text-decoration-line: line-through;
     color: rgb(164, 51, 51);
+}
+
+.captcha_img {
+    display: flex;
 }
