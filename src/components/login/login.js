@@ -68,6 +68,7 @@ const Login = () => {
                 if (captchaText !== enteredCaptchaText) {
                     alert("Please enter correct captcha")
                     handleRefresh();
+                    setEnteredCaptchaText("")
                 } else {
                     setLoading(true)
                     fetch(`${url}`, {
@@ -191,7 +192,7 @@ const Login = () => {
                                     <ArrowPathIcon onClick={handleRefresh} className='refresh' />
                                 </div>
                                 <form >
-                                    <input type="text" onChange={(e) => setEnteredCaptchaText(e.target.value)} className='input' />
+                                    <input type="text" onChange={(e) => setEnteredCaptchaText(e.target.value)} className='input' value={enteredCaptchaText}/>
                                 </form>
                             </div>
                             <div className="buttons">
