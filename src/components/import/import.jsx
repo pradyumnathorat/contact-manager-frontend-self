@@ -31,7 +31,7 @@ const fileUpload = async (csv) => {
       });
       
       setApiCallMade(!apiCallMade);
-      console.log(response);
+      
       }
       //console.log(response);
     } catch (error) {
@@ -44,7 +44,7 @@ const fileUpload = async (csv) => {
         event.preventDefault();
         
         const file = event.dataTransfer.files[0];
-        console.log(file);
+        
          
         if (file.type === "text/csv") {
 

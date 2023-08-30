@@ -64,7 +64,7 @@ function Table() {
           setRenderTable(true);
         }
         setLoading(false);
-        console.log(res);
+        // console.log(res);
       })
       .catch(err => {
         setError(err);
@@ -151,7 +151,7 @@ function Table() {
   const searchEvent=(val)=>{
     
     let search=val.target.innerText;
-    console.log(search);
+    // console.log(search);
     setEnteredText(search);
     const newFilter = data.filter((value) => {
       return value.email.toLowerCase().includes(search.toLowerCase());

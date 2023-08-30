@@ -93,7 +93,7 @@ const Login = () => {
                         })
                     }).then((res) => res.json()
                     ).then((data) => {
-                        console.log(data);
+                        // console.log(data);
                         if (data.error) {
                             alert(data.error);
                             setLoading(false)
@@ -102,7 +102,7 @@ const Login = () => {
                             localStorage.setItem("user", data.user)
                             setemail("")
                             setpassword("")
-                            console.log(isAuthenticated())
+                            // console.log(isAuthenticated())
                             setLoading(false)
                             setredirect(true);
                         }
@@ -125,7 +125,7 @@ const Login = () => {
         <>
             {
                 loading ? (
-                    <div className="loadingContainer">
+                    <div className="loadingContainer2">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921"></img>
                     </div>
                 ) :

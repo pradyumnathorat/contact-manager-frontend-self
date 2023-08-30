@@ -28,7 +28,6 @@ function DeleteUI(props) {
   .filter(obj => obj.isChecked === true)
   .map(obj => obj._id);
   
-  console.log(array);
 
     const config = {
       headers: {
@@ -40,7 +39,7 @@ function DeleteUI(props) {
     try {
       if (!apiCallMade) {
       await axios.delete(`${url}/contacts/delete`,config) .then(response => {
-        console.log(response.data);
+        
       })
       .catch(error => {
         console.log(error);

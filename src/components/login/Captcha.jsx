@@ -24,7 +24,7 @@ const Captcha = ({ onCaptchaVerified  , isCaptchaVerified }) => {
 
     const handleVerify = (e) => {
         e.preventDefault();
-        console.log(captchaText,enteredCaptchaText);
+        
         if ( captchaText === enteredCaptchaText) {
             onCaptchaVerified()
         } else {
