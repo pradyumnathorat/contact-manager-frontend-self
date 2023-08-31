@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useRef } from "react";
 import { isAuthenticated } from "../../helper/helper";
 import { Link } from "react-router-dom";
 import "./login.css";
@@ -7,57 +7,25 @@ import { Navigate } from "react-router-dom";
 import { ArrowPathIcon } from '@heroicons/react/24/solid'
 import Svg from "./Svg";
 import Svg2 from "./Svg2";
-import Captcha from "captcha-image";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
-    const [email, setemail] = useState("");
-    const [password, setpassword] = useState("");
+    const [email, setemail] = useState("thoratpradyumna@gmail.com");
+    const [password, setpassword] = useState("Pradyumna");
     const [eye, seteye] = useState("password");
     const [redirect, setredirect] = useState(false);
     const url = process.env.REACT_APP_API;
     const [loading, setLoading] = useState(false);
-    const [enteredCaptchaText, setEnteredCaptchaText] = useState("");
     const [data, setData] = useState({ image: null, dataKey: null });
-    const { image, dataKey } = data;
+    const [captchaResponse, setCaptchaResponse] = useState(null);
+    const captchaRef = useRef()
 
-    useEffect(() => {
-        handleClick()
-    }, [])
+    const sitekey = "6LeQdecnAAAAAOBUQojVrM4S-o93a-_mVEaj3INl"
 
-    function handleClick() {
-        const captchaImage = new Captcha(
-            "30px Courier",
-            "center",
-            "middle",
-            150,
-            30,
-            "red",
-            "white",
-            5
-        ).createImage();
-        const generatedDataKey = captchaImage.match(/data-key="(.*?)"/)[1];
-        setData({ ...data, image: captchaImage, dataKey: generatedDataKey });
-    }
-
-    function createMarkup(source) {
-        return { __html: source };
-    }
-
-    function MyCaptcha() {
-        if (image === null) {
-            return <p>Please click to generate a new captcha image.</p>;
-        }
-        return (
-            <div>
-                <div dangerouslySetInnerHTML={createMarkup(image)} />
-            </div>
-        );
-    }
-
-
-    const handleRefresh = () => {
-        handleClick()
+    const handleCaptchaChange = (response) => {
+        setCaptchaResponse(response);
     };
+
 
     const validateEmail = (email) => {
         {
@@ -75,39 +43,37 @@ const Login = () => {
     }
     const HandleClick = (e) => {
         e.preventDefault();
-        if (email, password, enteredCaptchaText) {
+        captchaRef.current.reset()
+        if (email, password , captchaResponse) {
             const isVallid = validateEmail(email);
             if (isVallid) {
-                if ( dataKey !== enteredCaptchaText) {
-                    alert("Please enter correct captcha")
-                    handleRefresh();
-                    setEnteredCaptchaText("")
-                } else {
-                    setLoading(true)
-                    fetch(`${url}`, {
-                        method: "POST",
-                        headers: { 'Content-Type': "application/json" },
-                        body: JSON.stringify({
-                            email: email,
-                            password: password
-                        })
-                    }).then((res) => res.json()
-                    ).then((data) => {
-                        // console.log(data);
-                        if (data.error) {
-                            alert(data.error);
-                            setLoading(false)
-                        } else {
-                            localStorage.setItem("token", JSON.stringify(data.token))
-                            localStorage.setItem("user", data.user)
-                            setemail("")
-                            setpassword("")
-                            // console.log(isAuthenticated())
-                            setLoading(false)
-                            setredirect(true);
-                        }
+                setLoading(true)
+                fetch(`${url}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Captcha-Response": captchaResponse
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
                     })
-                }
+                }).then((res) => res.json()
+                ).then((data) => {
+                    // console.log(data);
+                    if (data.error) {
+                        alert(data.error);
+                        setLoading(false)
+                    } else {
+                        localStorage.setItem("token", JSON.stringify(data.token))
+                        localStorage.setItem("user", data.user)
+                        setemail("")
+                        setpassword("")
+                        // console.log(isAuthenticated())
+                        setLoading(false)
+                        setredirect(true);
+                    }
+                })
             } else {
                 alert("Please Enter Valid Email");
             }
@@ -154,14 +120,10 @@ const Login = () => {
                                 </div>
                             </div>
                             <div className='captcha'>
-                                <div>Captcha</div>
+                                {/* <div>Captcha</div> */}
                                 <div className='captcha_img'>
-                                    <MyCaptcha />
-                                    <ArrowPathIcon onClick={handleRefresh} className='refresh' />
+                                    <ReCAPTCHA sitekey={sitekey} onChange={handleCaptchaChange} ref={captchaRef}/>
                                 </div>
-                                <form >
-                                    <input type="text" onChange={(e) => setEnteredCaptchaText(e.target.value)} className='input' value={enteredCaptchaText} />
-                                </form>
                             </div>
                             <div className="buttons">
                                 <button className="button1" onClick={(e) => HandleClick(e)}>Sign In</button>
