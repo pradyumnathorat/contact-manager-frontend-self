@@ -10,8 +10,8 @@ import Svg2 from "./Svg2";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
-    const [email, setemail] = useState("thoratpradyumna@gmail.com");
-    const [password, setpassword] = useState("Pradyumna");
+    const [email, setemail] = useState("");
+    const [password, setpassword] = useState("");
     const [eye, seteye] = useState("password");
     const [redirect, setredirect] = useState(false);
     const url = process.env.REACT_APP_API;
